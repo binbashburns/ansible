@@ -1,6 +1,6 @@
 # Ansible Basics
 ## About
-This is just a Ansible snippets and notes, mostly for personal reference.</br>
+This is just a bunch of Ansible snippets and notes, mostly for personal reference.</br>
 Nothing serious, just taking some notes as a result of having gone through Ansible courses on ACloudGuru.</br>
 If you're interested in checking out the courses for yourself, feel free to check it out, along with ACGs other courses at the link below!</br>
 
