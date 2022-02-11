@@ -120,7 +120,7 @@ resource "aws_security_group" "pub_ssh_sg" {
   }
 }
 
-# Provides Security Group for ALB-to-ASG HTTP Communication
+# Provides Security Group for ALB-to-ASG SSH Communication
 resource "aws_security_group" "pri_ssh_sg" {
   name        = "ssh_access_private"
   description = "Allows SSH access from the Control Node"
@@ -138,6 +138,15 @@ resource "aws_security_group" "pri_ssh_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    description     = "ICMP Echo from Public Subnet"
+    from_port       = -1
+    to_port         = -1
+    protocol        = "icmp"
+    security_groups = ["${aws_security_group.pub_ssh_sg.id}"]
+  }
+
   tags = {
     Name = "private_ssh_access_sg"
   }
