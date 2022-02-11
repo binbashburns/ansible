@@ -9,6 +9,13 @@ resource "aws_instance" "rhel_ec2_control_node" {
   root_block_device {
     volume_size = 20
   }
+  user_data = <<-EOF
+    #!/bin/bash
+    yum update -y
+    yum install ansible -y
+    yum install vim -y
+    git clone https://github.com/binbashburns/ansible.git
+    EOF
   tags = {
     Name = "${var.base_name}_rhel_ec2_control_node"
   }

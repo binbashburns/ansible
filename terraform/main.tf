@@ -26,4 +26,10 @@ module "ec2" {
 
 output "ec2_ssh_pub_ip" {
   value = join(": ", ["Try to SSH to this IP. You'll have to get the key from Secrets Manager", module.ec2.ec2_ssh_pub_ip])
+  description = "Output Public IP of Control Node at runtime completion"
+}
+
+output "ec2_ssh_pri_ip" {
+  value = join(": ", ["SSH to this IP from the Control Node. You'll have to get the key from Secrets Manager", module.ec2.ec2_ssh_pri_ip])
+  description = "Output Private IP of Managed Node at runtime completion"
 }
