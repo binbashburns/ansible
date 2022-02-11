@@ -21,18 +21,34 @@ resource "aws_instance" "rhel_ec2_control_node" {
   }
 }
 
-# Provides Ansible Managed Node RHEL instance, which is managed via SSH
-resource "aws_instance" "rhel_ec2_managed_node" {
+# Provides Ansible Managed Node 1 RHEL instance, which is managed via SSH
+resource "aws_instance" "rhel_ec2_managed_node1" {
   ami                         = var.ami
   subnet_id                   = var.sub2_id
   instance_type               = var.instance_type
   vpc_security_group_ids      = [var.pri_ssh_sg]
   associate_public_ip_address = false
-  key_name                    = var.key_name_managed_node
+  key_name                    = var.key_name_managed_node1
   root_block_device {
     volume_size = 20
   }
   tags = {
-    Name = "${var.base_name}_rhel_ec2_managed_node"
+    Name = "${var.base_name}_rhel_ec2_managed_node1"
+  }
+}
+
+# Provides Ansible Managed Node 2 RHEL instance, which is managed via SSH
+resource "aws_instance" "rhel_ec2_managed_node2" {
+  ami                         = var.ami
+  subnet_id                   = var.sub2_id
+  instance_type               = var.instance_type
+  vpc_security_group_ids      = [var.pri_ssh_sg]
+  associate_public_ip_address = false
+  key_name                    = var.key_name_managed_node2
+  root_block_device {
+    volume_size = 20
+  }
+  tags = {
+    Name = "${var.base_name}_rhel_ec2_managed_node2"
   }
 }

@@ -41,6 +41,10 @@ variable "key_name_control_node" {
   description = "Imports name of SecretsManager managed Key for control node"
 }
 
-variable "key_name_managed_node" {
-  description = "Imports name of SecretsManager managed Key for managed node"
+variable "key_name_managed_node1" {
+  description = "Imports name of SecretsManager managed Key for managed node1"
+}
+
+variable "key_name_managed_node2" {
+  description = "Imports name of SecretsManager managed Key for managed node2"
 }
