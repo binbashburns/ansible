@@ -8,8 +8,8 @@ resource "tls_private_key" "key1" {
 
 # Provides an EC2 key pair resource for Control Node
 resource "aws_key_pair" "keypair_control_node" {
-  key_name = "${var.base_name}_control_node_key"
-  public_key      = tls_private_key.key1.public_key_openssh
+  key_name   = "${var.base_name}_control_node_key"
+  public_key = tls_private_key.key1.public_key_openssh
 }
 
 # Provides a resource to manage AWS Secrets Manager secret metadata
@@ -37,8 +37,8 @@ resource "tls_private_key" "key2" {
 
 # Provides an EC2 key pair resource for 
 resource "aws_key_pair" "keypair_managed_node" {
-  key_name = "${var.base_name}_managed_node_key"
-  public_key      = tls_private_key.key2.public_key_openssh
+  key_name   = "${var.base_name}_managed_node_key"
+  public_key = tls_private_key.key2.public_key_openssh
 }
 
 # Provides a resource to manage AWS Secrets Manager secret metadata

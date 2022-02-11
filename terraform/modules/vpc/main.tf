@@ -109,7 +109,6 @@ resource "aws_security_group" "pub_ssh_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    description      = "SSH port 22 to public internet"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -127,7 +126,7 @@ resource "aws_security_group" "pri_ssh_sg" {
   description = "Allows SSH access from the Control Node"
   vpc_id      = aws_vpc.vpc.id
   ingress {
-    description     = "SSH port 22 from the Application Load Balancer"
+    description     = "SSH port 22 from Subnet 1"
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
