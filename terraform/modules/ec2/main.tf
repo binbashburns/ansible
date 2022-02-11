@@ -11,9 +11,10 @@ resource "aws_instance" "rhel_ec2_control_node" {
   }
   user_data = <<-EOF
     #!/bin/bash
-    yum update -y
-    yum install ansible -y
-    yum install vim -y
+    yum update -y &&
+    yum install git -y &&
+    yum install ansible -y &&
+    yum install vim -y &&
     git clone https://github.com/binbashburns/ansible.git
     EOF
   tags = {
