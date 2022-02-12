@@ -46,7 +46,8 @@ ansible         ALL=(ALL)       NOPASSWD: ALL
 - The best place to start, is https://docs.ansible.com
 - The most important place is the Module Index: https://docs.ansible.com/ansible/latest/collections/index_module.html
 - You can also use the `ansible-doc` command at the command line. 
-- Let's imagine you want to review documentation for the **ansible.builtin.apt** module. Use `ansible-doc s ansible.builtin.apt`
+- Let's imagine you want to review documentation for the **ansible.builtin.apt** module. Use:
+`ansible-doc -s apt`
 
 ## Ansible Modes
 ### Ansible Ad-hoc
@@ -54,13 +55,27 @@ ansible         ALL=(ALL)       NOPASSWD: ALL
 - Example: Create a user
 - One-off things that you do not expect to repeat
 - Useful when you're learning a module and you don't know how it works
-- Ad-hoc commands are ran using the `ansible` command. Example: `ansible nodes -m setup | less`
-- **NOTE**: The `setup` command gathers information about the hosts specified. It is very verbose, so the `less` command helps us to see a little at a time.
+- Ad-hoc commands are ran using the `ansible` command. Example: 
+`ansible nodes -m setup | less`
+- **NOTE**: The `setup` module gathers information about the hosts specified. It is very verbose, so the `less` command helps us to see a little at a time.
 - More information on the `setup` module can be found here: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/setup_module.html 
-- Another example of an ad-hoc command is `ansible nodes -m ping`, which just tests the reachability of a remote node.
-- Let's say you wanted to install Apache Web Server. Try `ansible nodes -m yum -a "name=httpd state=latest"`
+- Another example of an ad-hoc command is to test the reachability of a remote node:
+`ansible nodes -m ping`
+- Let's say you wanted to install Apache Web Server. Try:
+`ansible nodes -m yum -a "name=httpd state=latest"`
 - If you try the above command, you will get an error message telling you that you need to run the command as a superuser. For that, we'll add the `-b` flag (more information on the `--become` or `-b` flag can be found at https://docs.ansible.com/ansible/latest/user_guide/become.html). So the command will be:
 `ansible nodes -b -m yum -a "name=httpd state=latest"`
+- The above command will only install Apache though. Let's make sure we start the httpd service (like `systemctl start httpd`, but the Ansible way!):
+`ansible nodes -b -m service -a "name=httpd state=started"`
+- You can verify that **httpd** is running by going to the **managed node(s)** and running `sudo systemctl status httpd`. You should see something like:
+```
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; vendor preset: disabled)
+   Active: **active (running)** since Sat 2022-02-12 21:06:09 UTC; 2min 10s ago ...
+```
+- If you were to run the `ansible nodes -b -m service -a "name=httpd state=started"` command again, you'll see basically the same image you saw before, only this time the text will be **green** as opposed to **orange**. 
+- It will also have `"changed": false` toward the top. This is because Ansible understands the concept of **state**
+- Plays, or specific ad-hoc commands, can be ran against the same target over and over again, with no consequence or whether or not it will create issues. An exception to this would be shell commands, which could escape that **idempotent** concept that we want to focus in on.
 
 ### Ansible Playbook
 - Comparable to **bash scripts**
