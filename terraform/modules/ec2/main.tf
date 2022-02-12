@@ -56,7 +56,7 @@ resource "aws_instance" "ec2_managed_node2" {
   root_block_device {
     volume_size = 20
   }
-    user_data = <<-EOF
+  user_data = <<-EOF
     #!/bin/bash
     yum install vim -y
     sudo useradd ansible
