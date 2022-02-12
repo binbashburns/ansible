@@ -11,13 +11,13 @@ resource "aws_instance" "ec2_control_node" {
   }
   user_data = <<-EOF
     #!/bin/bash
-    yum list epel-release
-    yum update -y
-    yum install git -y
-    yum install ansible -y
-    yum install vim -y
-    sudo useradd ansible
     sudo hostnamectl set-hostname --static ansible-control-node
+    sudo yum install epel-release -y
+    sudo yum update -y
+    sudo yum install git -y
+    sudo yum install ansible -y
+    sudo yum install vim -y
+    sudo useradd ansible
     EOF
   tags = {
     Name = "${var.base_name}_ec2_control_node"
@@ -37,7 +37,7 @@ resource "aws_instance" "ec2_managed_node1" {
   }
   user_data = <<-EOF
     #!/bin/bash
-    yum install vim -y
+    sudo yum install vim -y
     sudo useradd ansible
     sudo hostnamectl set-hostname --static ansible-managed-node-1
     EOF
@@ -59,7 +59,7 @@ resource "aws_instance" "ec2_managed_node2" {
   }
   user_data = <<-EOF
     #!/bin/bash
-    yum install vim -y
+    sudo yum install vim -y
     sudo useradd ansible
     sudo hostnamectl set-hostname --static ansible-managed-node-2
     EOF
