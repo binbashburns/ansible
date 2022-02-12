@@ -79,4 +79,44 @@ ansible         ALL=(ALL)       NOPASSWD: ALL
 
 ### Ansible Playbook
 - Comparable to **bash scripts**
-- Example 
+- Playbooks are the primary means for Ansible to perform tasks
+- Playbooks are written in YAML
+- Each element within the playbook is called a **play**
+- Each **play** must contain a list of hosts and at least one **task**
+- Each **task** has a name and module
+- **NOTE**: Watch your spacing! Indentation can mess up your playbook.
+- Playbooks are ran using the `ansible-playbook` command. 
+- You can create individual inventory files as opposed to using the default inventory file. Example:
+`vim inventory`, then insert the following:
+```
+[webservers]
+web1 ansible_host=10.1.2.188
+web2 ansible_host=10.1.2.78
+```
+- Now, let's create a Ansible playbook, starting with `vim webbootstrap.yml`, then inputting the following:
+```
+--- # Bootstrap Webservers
+- hosts: webservers
+  become: yes
+  tasks:
+  - name: install httpd
+    yum: 
+      name: httpd
+      state: latest
+  - name: create index.html file
+    file:
+      name: /var/www/html/index.html
+      state: touch
+  - name: add web content
+    lineinfile:
+      line: "here is some text"
+      path: /var/www/html/index.html
+  - name: start httpd
+    service:
+      name: httpd
+      state: started
+```
+- Save and close, then issue the following command:
+`ansible-playbook -i inventory webbootstrap.yml`
+- You should now be able to validate that the httpd server is running with the following command:
+` curl 10.1.2.188:80/index.html`

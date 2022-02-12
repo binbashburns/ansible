@@ -120,15 +120,29 @@ resource "aws_security_group" "pub_ssh_sg" {
   }
 }
 
-# Provides Security Group for ALB-to-ASG SSH Communication
+# Provides Security Group for Public to Private Subnet Communication
 resource "aws_security_group" "pri_ssh_sg" {
-  name        = "ssh_access_private"
+  name        = "ssh_icmp_http_private"
   description = "Allows SSH access from the Control Node"
   vpc_id      = aws_vpc.vpc.id
   ingress {
-    description     = "SSH port 22 from Subnet 1"
+    description     = "SSH from Public Subnet"
     from_port       = 22
     to_port         = 22
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.pub_ssh_sg.id}"]
+  }
+  ingress {
+    description     = "ICMP Echo from Public Subnet"
+    from_port       = -1
+    to_port         = -1
+    protocol        = "icmp"
+    security_groups = ["${aws_security_group.pub_ssh_sg.id}"]
+  }
+  ingress {
+    description     = "HTTP from Public Subnet"
+    from_port       = 80
+    to_port         = 80
     protocol        = "tcp"
     security_groups = ["${aws_security_group.pub_ssh_sg.id}"]
   }
@@ -138,16 +152,7 @@ resource "aws_security_group" "pri_ssh_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  ingress {
-    description     = "ICMP Echo from Public Subnet"
-    from_port       = -1
-    to_port         = -1
-    protocol        = "icmp"
-    security_groups = ["${aws_security_group.pub_ssh_sg.id}"]
-  }
-
   tags = {
-    Name = "private_ssh_access_sg"
+    Name = "private_ssh_icmp_http_access_sg"
   }
 }
