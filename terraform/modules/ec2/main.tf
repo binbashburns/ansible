@@ -11,6 +11,7 @@ resource "aws_instance" "ec2_control_node" {
   }
   user_data = <<-EOF
     #!/bin/bash
+    yum list epel-release
     yum update -y
     yum install git -y
     yum install ansible -y
