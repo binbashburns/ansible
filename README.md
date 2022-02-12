@@ -14,7 +14,7 @@ This repo contains the following objects:
 
 ## AWS Lab Environment (Terraform Required)
 - There is an optional lab environment you can spin up in the `terraform` directory of this repository 
-- There is a Network Diagram in this directory as well that shows how the lab environment is configured
+- There is a Network Diagram in the **terraform/** directory as well that shows how the lab environment is configured
 - You must have Terraform installed and be logged in via AWS CLI
 - From the command line:
 ```
