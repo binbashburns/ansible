@@ -5,7 +5,7 @@ variable "base_name" {
 
 variable "ami" {
   type        = string
-  default     = "ami-0b0af3577fe5e3532"
+  default     = "ami-0affd4508a5d2481b"
   description = "The AMI for the EC2 instance"
 }
 

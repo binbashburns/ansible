@@ -1,5 +1,5 @@
-# Provides Ansible Control Node RHEL instance, which is managed via SSH
-resource "aws_instance" "rhel_ec2_control_node" {
+# Provides Ansible Control Node instance, which is managed via SSH
+resource "aws_instance" "ec2_control_node" {
   ami                         = var.ami
   subnet_id                   = var.sub1_id
   instance_type               = var.instance_type
@@ -15,14 +15,16 @@ resource "aws_instance" "rhel_ec2_control_node" {
     yum install git -y
     yum install ansible -y
     yum install vim -y
+    sudo useradd ansible
+    sudo hostnamectl set-hostname --static ansible-control-node
     EOF
   tags = {
-    Name = "${var.base_name}_rhel_ec2_control_node"
+    Name = "${var.base_name}_ec2_control_node"
   }
 }
 
-# Provides Ansible Managed Node 1 RHEL instance, which is managed via SSH
-resource "aws_instance" "rhel_ec2_managed_node1" {
+# Provides Ansible Managed Node 1 instance, which is managed via SSH
+resource "aws_instance" "ec2_managed_node1" {
   ami                         = var.ami
   subnet_id                   = var.sub2_id
   instance_type               = var.instance_type
@@ -32,13 +34,19 @@ resource "aws_instance" "rhel_ec2_managed_node1" {
   root_block_device {
     volume_size = 20
   }
+  user_data = <<-EOF
+    #!/bin/bash
+    yum install vim -y
+    sudo useradd ansible
+    sudo hostnamectl set-hostname --static ansible-managed-node-1
+    EOF
   tags = {
-    Name = "${var.base_name}_rhel_ec2_managed_node1"
+    Name = "${var.base_name}_ec2_managed_node1"
   }
 }
 
-# Provides Ansible Managed Node 2 RHEL instance, which is managed via SSH
-resource "aws_instance" "rhel_ec2_managed_node2" {
+# Provides Ansible Managed Node 2 instance, which is managed via SSH
+resource "aws_instance" "ec2_managed_node2" {
   ami                         = var.ami
   subnet_id                   = var.sub2_id
   instance_type               = var.instance_type
@@ -48,7 +56,13 @@ resource "aws_instance" "rhel_ec2_managed_node2" {
   root_block_device {
     volume_size = 20
   }
+    user_data = <<-EOF
+    #!/bin/bash
+    yum install vim -y
+    sudo useradd ansible
+    sudo hostnamectl set-hostname --static ansible-managed-node-2
+    EOF
   tags = {
-    Name = "${var.base_name}_rhel_ec2_managed_node2"
+    Name = "${var.base_name}_ec2_managed_node2"
   }
 }
