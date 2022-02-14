@@ -4,17 +4,26 @@
   tasks:
   - name: install httpd
     yum: 
-      name: httpd
+      name: httpd               # optionally "{{ target_service }}", and `ansible-playbook -i inventory webbootstrap.yml -e "target_service=httpd"`
       state: latest
+    notify:
+      - restart httpd
   - name: create index.html file
     file:
       name: /var/www/html/index.html
       state: touch
   - name: add web content
     lineinfile:
-      line: "here is some text"
+      line: "here is some text" # optionally "{{ ansible_hostname }}"
       path: /var/www/html/index.html
-  - name: start httpd
+    notify:
+      - restart httpd
+    register: task_debug
+  - debug:
+      msg: "Output of lineinfile is: {{ task_debug }}"
+  handlers:
+  - name: Attempt to restart httpd
     service:
-      name: httpd
-      state: started
+      name: httpd               # optionally "{{ target_service }}", and `ansible-playbook -i inventory webbootstrap.yml -e "target_service=httpd"`
+      state: restarted
+    listen: "restart httpd"
